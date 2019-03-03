@@ -11,6 +11,11 @@ Vue.use(Router)
 let routes = [
     {
         path: '/',
+        redirect: '/viewer'
+        // component: Home
+    },
+    {
+        path: '/viewer',
         component: Home
     },
     {

@@ -6,15 +6,22 @@
                 :height="500"
                 :backgroundAlpha="bgAlpha"
                 :backgroundColor="bgColor"
-                src="/static/models/obj/tree.obj"></model-obj>
+                :src="modelSrc" v-if="type === 'obj'"></model-obj>
+            <!-- <model-collada src="static/models/collada/avatar.dae"></model-collada> -->
+            <model-stl
+                :width="500"
+                :height="500"
+                :backgroundAlpha="bgAlpha"
+                :backgroundColor="bgColor"
+                :src="modelSrc" v-if="type === 'stl'"></model-stl>
         </div>
         <div class="tool-box">
             <div class="background-buttons">
-                <p>Color</p>
+                <p>背景色</p>
                 <button @click="bgColor = '#ff0'">#ff0</button>
                 <button @click="bgColor = '#f00'">#f00</button>
                 <button @click="bgColor = '#13ce66'">#13ce66</button>
-                <p>Alpha</p>
+                <p>透明度</p>
                 <button @click="bgAlpha = 0.5">0.5</button>
                 <button @click="bgAlpha = 1">1</button>
                 <button @click="bgAlpha = 0">0</button>
@@ -24,11 +31,13 @@
 </template>
 
 <script>
-    import { ModelObj } from 'vue-3d-model'
+    import { ModelObj, ModelStl, ModelCollada } from 'vue-3d-model'
 
     export default {
         data () {
             return {
+                type: 'obj',
+                modelSrc: '',
                 bgColor: '#ff0',
                 bgAlpha: 0.5,
                 page: {
@@ -42,8 +51,19 @@
                 }
             }
         },
+        mounted() {
+            let data = this.$route.query.data
+            if (data) {
+                this.modelSrc = data
+                let arr = data.split('.')
+                this.type = arr[arr.length - 1]
+                console.log(this.type)
+            }
+        },
         components: {
-            ModelObj
+            ModelObj,
+            ModelStl,
+            ModelCollada
         }
     }
 </script>
